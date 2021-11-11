@@ -1,3 +1,4 @@
+
 %Quadrotor model
 %
 clear all;close all;
@@ -18,9 +19,8 @@ m = 2;      % [kg]
 l = 0.25;    % [m]
 d = 0.03;
 m1=0.1;
-% 
 
- % %% Initial state
+% Initial state
 x0 = 0;
 y0 = 0;
 z0 = 0;
@@ -36,7 +36,7 @@ r0 = 0;
 
 initialCondition = [x0 vx0 y0 vy0 z0 vz0 phi0 p0 theta0 q0 psi0 r0]';
 
-% %desired position
+% desired position
 x_d=0;
 y_d=0;
 z_d =3;
@@ -44,21 +44,17 @@ z_d =3;
 % hovering task
 phi_d = 0;
 theta_d =0;
-%  regulation value depends on the task
+
+% regulation value depends on the task
 psi_d =0;
 
-% %model parameters
- par=[m;m1;Ix;Iy;Iz;Ir;Om_r;d;l;g];
-% %controller gains
+% model parameters
+par=[m;m1;Ix;Iy;Iz;Ir;Om_r;d;l;g];
    
-% %regulation values
- regval=[x_d;y_d;z_d;phi_d;theta_d;psi_d];
+% regulation values
+regval=[x_d;y_d;z_d;phi_d;theta_d;psi_d];
  
- 
- 
- % %control
-%%% Students control parameters
-%lunch the script used to initialize the parameters gains for the PID0
+% control
 kx = 0.1;
 kx_d = 0.54;
 kx_i = 0.0;
@@ -83,12 +79,9 @@ k_psi = 10;
 kpsi_d = 10;
 kpsi_i=0.1;
 
-% 
 gain=[kx;kx_d;kx_i;...
        ky;ky_d;ky_i;...
        kz;kz_d;kz_i;...
        k_phi;kphi_d;kphi_i;...
        k_theta;ktheta_d;ktheta_i;...
        k_psi;kpsi_d;kpsi_i];
-
-
