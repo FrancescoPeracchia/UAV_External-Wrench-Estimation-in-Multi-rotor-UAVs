@@ -1,12 +1,15 @@
 % init connection
-[sim, id] = simConnect();
-
+[sim, id] = API.simConnect();
+if (id <0) 
+    return;
+end
+    
 % Now step a few times:
 for i=0:10
-    disp('Press a key to step the simulation!');
+    sim.simxSetFloatSignal(id, 'u', i+90, sim.simx_opmode_oneshot);
     pause;
     sim.simxSynchronousTrigger(id);
 end
 
 % close connection
-simClose(sim,id)
+API.simClose(sim,id)
