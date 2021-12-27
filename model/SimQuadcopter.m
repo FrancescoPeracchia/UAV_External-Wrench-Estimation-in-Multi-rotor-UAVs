@@ -24,9 +24,10 @@ classdef SimQuadcopter
             u = 0;
         end
         
-        function command(u)
+        function state = command(u)
             % COMMAND Summary of this method goes here
             %   Detailed explanation goes here
+            state = [];
         end
     end
 end
