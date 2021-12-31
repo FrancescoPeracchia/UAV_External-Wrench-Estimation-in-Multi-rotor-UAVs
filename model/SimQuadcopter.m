@@ -11,23 +11,26 @@ classdef SimQuadcopter
     
     methods
         function obj = SimQuadcopter(sim,id,step)
-            % QUADCOPTER Construct an instance of this class
+            % SIMQUADCOPTER constructor
             obj.sim = sim;
             obj.id = id;
             obj.step = step;
             obj.quadcopter = Quadcopter();
         end
         
-        function u = control(q_des)
-            % CONTROL Summary of this method goes here
-            %   Detailed explanation goes here
-            u = 0;
+        function obj = init(obj,state)
+            % INIT inherits the setState function
+            obj.quadcopter.setState(state);
         end
         
-        function state = command(u)
-            % COMMAND Summary of this method goes here
-            %   Detailed explanation goes here
-            state = [];
+        function u = control(obj,pose)
+            % CONTROL inherits the control function
+            u = obj.quadcopter.control(pose);
+        end
+        
+        function state = command(obj,u)
+            % COMMAND inherits the command function
+            state = obj.quadcopter.command(u);
         end
     end
 end

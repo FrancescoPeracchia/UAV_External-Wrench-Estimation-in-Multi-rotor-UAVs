@@ -20,7 +20,7 @@ classdef API
                 disp('Connected to remote API server');
 
             else
-                disp('Failed connecting to remote API server');
+                error('Failed connecting to remote API server');
                 
             end
         end
