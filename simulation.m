@@ -4,10 +4,11 @@ clc
 % coppelia sim step
 step = 0.05;
 % sampling time and duration of experiment
-T = 30;
+T = 10;
 
 % init connection
-[sim, id] = API.simConnect();
+%[sim, id] = API.simConnect();
+sim = 0; id = 0;
 
 % init robot model
 robot = SimQuadcopter(sim, id, step);
@@ -15,7 +16,7 @@ initial_state = zeros(1,12);
 robot.init(initial_state);
 
 % initialization of task
-trajectory = hovering(6);
+trajectory = hovering(3);
 
 % control loop
 for current_time = 0:step:T
@@ -23,20 +24,19 @@ for current_time = 0:step:T
     disp(["time: ", current_time]);
     
     % get next desired position and orientation 
-    pose_d = trajectory(current_time);
+    traj = trajectory(current_time);
     
     % compute the control
-    u = robot.control(pose_d);
+    u = robot.control(traj);
     
     % feed the new input
-    robot.command(u);
+    state = robot.command(u,current_time);
     
-    e = 0;
-    disp(["error: ", e]);
+    %disp(["error: ", state]);
 end
 
 % close connection
-API.simClose(sim,id)
+%API.simClose(sim,id)
 
 % plot results
 %plots;
