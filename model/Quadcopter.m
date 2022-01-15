@@ -99,7 +99,7 @@ classdef Quadcopter < handle
             % COMMAND send trust commands to the propellers
             %   input 
             %    - u:       trust and torques commands [T, tau]
-            %    - t:       time
+            %    - t:       time step
             %   output
             %    - state:   computes [x y z vx vy vz phi theta psi p q r]
             
@@ -121,8 +121,9 @@ classdef Quadcopter < handle
             qdot = ((Iz-Ix)/Iy)*p*r - (obj.Ir/Iy)*p*obj.Om_r + (obj.l/Iy)*tau_theta;
             rdot =  ((Ix-Iy)/Iz)*p*q + (1/Iz)*tau_psi;
 
-            % integrate TODO ?????
-            state = [x+vx*t,y+vy*t,z+vz*t,vx+ax*t,vy+ay*t,vz+az*t,phi+p*t,theta+q*t,psi+r*t,p+pdot*t,q+qdot*t,r+rdot*t];
+            % integrate and update state
+            state_dot = [vx,vy,vz,ax,ay,az,p,q,r,pdot,qdot,rdot];
+            state = obj.state + state_dot*t;
             obj.state = state;
         end
     end

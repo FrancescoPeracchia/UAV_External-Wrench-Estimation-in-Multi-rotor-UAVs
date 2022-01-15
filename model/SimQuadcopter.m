@@ -1,6 +1,7 @@
 classdef SimQuadcopter < handle
-    % SIMQUADCOPTER Summary of this class goes here
-    %   Detailed explanation goes here
+    % SIMQUADCOPTER
+    %   handles data exchange between matlab and coppelia
+    %   inheriting the Quadcopter class functions
     
     properties
         sim
@@ -41,6 +42,20 @@ classdef SimQuadcopter < handle
         
         function params = getParams()
             % GETPARAMS gets quadrotor parameters from coppelia
+            g = 9.81;   % [ms^-2]
+            l = 0.25;    % [m]
+            m = 2;      % [kg]
+            Ix = 0.5;   % [kg*m^2]
+            Iy = 0.5;
+            Iz = 0.9;
+            Ir = 0.005;
+            Om_r = 70; % [s^-2]
+            
+            params = [g;m;l;Ix;Iy;Iz;Ir;Om_r];
+        end
+        
+        function params = setParams()
+            % GETPARAMS set quadrotor parameters
             g = 9.81;   % [ms^-2]
             l = 0.25;    % [m]
             m = 2;      % [kg]

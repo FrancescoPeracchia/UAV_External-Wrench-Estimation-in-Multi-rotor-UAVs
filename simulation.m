@@ -7,8 +7,7 @@ step = 0.05;
 T = 10;
 
 % init connection
-%[sim, id] = API.simConnect();
-sim = 0; id = 0;
+[sim, id] = API.simConnect();
 
 % init robot model
 robot = SimQuadcopter(sim, id, step);
@@ -16,7 +15,7 @@ initial_state = zeros(1,12);
 robot.init(initial_state);
 
 % initialization of task
-trajectory = hovering(3);
+trajectory = hovering(6);
 
 % control loop
 for current_time = 0:step:T
@@ -30,13 +29,13 @@ for current_time = 0:step:T
     u = robot.control(traj);
     
     % feed the new input
-    state = robot.command(u,current_time);
+    state = robot.command(u,step);
     
-    %disp(["error: ", state]);
+    disp(["error: ", state]);
 end
 
 % close connection
-%API.simClose(sim,id)
+API.simClose(sim,id)
 
 % plot results
 %plots;
