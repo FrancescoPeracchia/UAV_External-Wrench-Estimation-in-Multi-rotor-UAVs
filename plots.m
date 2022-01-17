@@ -1,4 +1,3 @@
-
 figure(1)
 plot3(Position.signals.values(:,1),Position.signals.values(:,2),Position.signals.values(:,3));
 hold on

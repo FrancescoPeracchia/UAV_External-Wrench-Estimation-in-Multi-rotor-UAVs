@@ -27,8 +27,13 @@ classdef Quadcopter < handle
     end
     
     methods
-        function obj = Quadcopter(params,gains)
-            % QUADCOPTER constructor
+        function obj = Quadcopter(params)            
+            % QUADCOPTER constructor with optional value params
+            if ~exist('params','var')
+                params = obj.getDefaultParams();
+            end
+            gains = obj.getGains();
+            
             obj.g = params(1);
             obj.m = params(2);
             obj.l = params(3);
@@ -41,6 +46,11 @@ classdef Quadcopter < handle
             obj.k_phi = [gains(7),gains(8)];
             obj.k_theta = [gains(9),gains(10)];
             obj.k_psi = [gains(11),gains(12)];
+        end
+        
+        function obj = update(obj,state)
+            % INIT inherits the setState function
+            obj.state = state;
         end
         
         function u = control(obj,traj)
@@ -107,7 +117,7 @@ classdef Quadcopter < handle
             [T, tau_phi, tau_theta, tau_psi] = deal(u(1),u(2),u(3),u(4));
             [Ix,Iy,Iz] = deal(obj.I(1),obj.I(2),obj.I(3));
             
-            [x,y,z,vx,vy,vz,phi,theta,psi,p,q,r] = deal(...
+            [~,~,~,vx,vy,vz,phi,theta,psi,p,q,r] = deal(...
                 obj.state(1),obj.state(2),obj.state(3),obj.state(4),...
                 obj.state(5),obj.state(6),obj.state(7),obj.state(8),...
                 obj.state(9),obj.state(10),obj.state(11),obj.state(12));
@@ -124,8 +134,50 @@ classdef Quadcopter < handle
             % integrate and update state
             state_dot = [vx,vy,vz,ax,ay,az,p,q,r,pdot,qdot,rdot];
             state = obj.state + state_dot*t;
-            obj.state = state;
+            obj.update(state);
         end
+    end
+    
+    methods(Static)
+       
+        function params = getDefaultParams()
+            % GETPARAMS set quadrotor parameters
+            g = 9.81;   % [ms^-2]
+            l = 0.25;    % [m]
+            m = 2;      % [kg]
+            Ix = 0.5;   % [kg*m^2]
+            Iy = 0.5;
+            Iz = 0.9;
+            Ir = 0.005;
+            Om_r = 70; % [s^-2]
+            
+            params = [g;m;l;Ix;Iy;Iz;Ir;Om_r];
+        end
+        
+        function gains = getGains()
+            % SETGAINS set gains values for control
+            kx_p = 0.1;
+            kx_d = 0.54;
+
+            ky_p = 0.1;
+            ky_d = 0.5;
+
+            kz_p = 2;
+            kz_d = 3;
+
+            kphi_p = 20;
+            kphi_d = 25;
+
+            ktheta_p = 10;
+            ktheta_d = 15;
+
+            kpsi_p = 10;
+            kpsi_d = 10;
+
+            gains=[kx_p,kx_d,ky_p,ky_d,kz_p,kz_d,...
+                kphi_p,kphi_d,ktheta_p,ktheta_d,kpsi_p,kpsi_d];
+        end
+
     end
 end
 
