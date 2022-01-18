@@ -6,6 +6,7 @@ clc
 
 % coppeliasim step
 [~,step] = sim.simxGetFloatSignal(id, 'Simulation/step', sim.simx_opmode_blocking);
+sim.simxSetFloatSignal(id, 'Simulation/start', 0, sim.simx_opmode_oneshot);
 
 % sampling time and duration of experiment
 T = 10;
@@ -16,7 +17,7 @@ initial_state = [0 0 0.1 0 0 0 0 0 pi 0 0 0];
 robot.init(initial_state);
 
 % initialization of task
-trajectory = hovering(2);
+trajectory = hovering(3);
 
 % control loop
 for current_time = 0:step:T
@@ -32,7 +33,6 @@ for current_time = 0:step:T
     
     % send command to robot
     state = robot.command(u);
-    sim.simxSynchronousTrigger(id);
    
     disp(["state: ", state]);
 end

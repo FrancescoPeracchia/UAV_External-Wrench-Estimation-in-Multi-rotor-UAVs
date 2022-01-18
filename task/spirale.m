@@ -5,6 +5,6 @@ function trajectory = spirale()
     acc = @(t)[-cos(t), -sin(t), 0];
     att = zeros(1,3);
     
-    trajectory = [pos; att; vel; acc];
+    trajectory = @(t)[pos(t); att; vel(t); acc(t)];
 end
 

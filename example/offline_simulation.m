@@ -1,5 +1,6 @@
 clear all
 clc
+cd('..')
 
 % simulation step
 step = 0.05;
@@ -24,7 +25,7 @@ for current_time = 0:step:T
     
     % compute the control
     u = robot.control(traj);
-    disp(u)
+    disp(["control: ", u]);
     
     % feed the new input
     state = robot.command(u,step);
