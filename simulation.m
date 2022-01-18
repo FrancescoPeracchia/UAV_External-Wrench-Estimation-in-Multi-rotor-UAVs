@@ -13,11 +13,11 @@ T = 10;
     
 % init robot model
 robot = SimQuadcopter(sim, id);
-initial_state = [0 0 0.1 0 0 0 0 0 pi 0 0 0];
+initial_state = [0 0 0.1 0 0 0 0 0 0 0 0 0];
 robot.init(initial_state);
 
 % initialization of task
-trajectory = hovering(1,pi);
+trajectory = spirale();
 
 % control loop
 for current_time = 0:step:T

@@ -1,6 +1,5 @@
 clear all
 clc
-cd('..')
 
 % simulation step
 step = 0.05;
