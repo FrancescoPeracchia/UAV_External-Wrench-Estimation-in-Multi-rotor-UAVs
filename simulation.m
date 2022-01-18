@@ -17,7 +17,7 @@ initial_state = [0 0 0.1 0 0 0 0 0 pi 0 0 0];
 robot.init(initial_state);
 
 % initialization of task
-trajectory = hovering(3);
+trajectory = hovering(1,pi);
 
 % control loop
 for current_time = 0:step:T

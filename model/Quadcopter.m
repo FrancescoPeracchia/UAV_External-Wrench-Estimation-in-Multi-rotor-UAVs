@@ -101,7 +101,7 @@ classdef Quadcopter < handle
             tau_phi = Ix*(kphi_p*(phi_d-phi)+kphi_d*(-p));
             tau_theta = Iy*(ktheta_p*(theta_d-theta)+ktheta_d*(-q));
             tau_psi = Iz*(kpsi_p*(psi_d-psi)+kpsi_d*(-r));
-
+            
             u = [T,tau_phi,tau_theta,tau_psi];
         end
         

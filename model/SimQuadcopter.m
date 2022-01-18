@@ -45,7 +45,7 @@ classdef SimQuadcopter < handle
         end
         
         function state = command(obj,u)
-            % COMMAND 
+            % COMMAND send commands to quadrotor and retrive state
             
             % send commands to simulator
             [T,tau_phi,tau_theta,tau_psi] = deal(u(1),u(2),u(3),u(4));
