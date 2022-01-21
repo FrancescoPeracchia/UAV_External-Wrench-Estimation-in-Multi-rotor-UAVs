@@ -54,10 +54,6 @@ classdef SimQuadcopter < handle
             obj.sim.simxSetFloatSignal(obj.id, 'UAV/control/torque/theta', tau_theta, obj.sim.simx_opmode_oneshot);
             obj.sim.simxSetFloatSignal(obj.id, 'UAV/control/torque/psi', tau_psi, obj.sim.simx_opmode_oneshot);
             
-            %[~,p] = obj.sim.simxGetObjectPosition(obj.id, obj.handle, -1, obj.sim.simx_opmode_blocking);
-            %[~,xyz] = obj.sim.simxGetObjectOrientation(obj.id, obj.handle, -1, obj.sim.simx_opmode_blocking);
-            %[~,v,w] = obj.sim.simxGetObjectVelocity(obj.id, obj.handle, obj.sim.simx_opmode_blocking);
-            %state = [p v xyz2rpy(xyz) w];
             % read state from simulator
             [~,x] = obj.sim.simxGetFloatSignal(obj.id, 'UAV/state/position/x', obj.sim.simx_opmode_streaming);
             [~,y] = obj.sim.simxGetFloatSignal(obj.id, 'UAV/state/position/y', obj.sim.simx_opmode_streaming);
@@ -71,6 +67,7 @@ classdef SimQuadcopter < handle
             [~,wx] = obj.sim.simxGetFloatSignal(obj.id, 'UAV/state/velocity/angular/x', obj.sim.simx_opmode_streaming);
             [~,wy] = obj.sim.simxGetFloatSignal(obj.id, 'UAV/state/velocity/angular/y', obj.sim.simx_opmode_streaming);
             [~,wz] = obj.sim.simxGetFloatSignal(obj.id, 'UAV/state/velocity/angular/z', obj.sim.simx_opmode_streaming);
+            
             state = [x y z vx vy vz abg2rpy([a b g]) wx wy wz];
             obj.quadcopter.update(state);
             
