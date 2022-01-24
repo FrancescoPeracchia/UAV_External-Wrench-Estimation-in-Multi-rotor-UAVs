@@ -74,9 +74,8 @@ classdef Quadcopter < handle
                 obj.state(9),obj.state(10),obj.state(11),obj.state(12));
             
             % external forces applied to quadrotor
-            [Fe,tau_e] = obj.getWrench();
-            [Fx,Fy,Fz] = deal(Fe(1),Fe(2),Fe(3));
-            [tau_x,tau_y,tau_z] = deal(tau_e(1),tau_e(2),tau_e(3));
+            [Fe,~] = obj.getWrench();
+            Fz = Fe(3);
             
             % inertia
             [Ix,Iy,Iz] = deal(obj.I(1),obj.I(2),obj.I(3));
@@ -95,17 +94,17 @@ classdef Quadcopter < handle
             T = fl_z*stab_z;
             
             % desired thrust direction
-            Tx = (obj.m/T)*(kx_p*(x_d-x)+kx_d*(vx_d-vx)+ax_d - Fx);
-            Ty = (obj.m/T)*(ky_p*(y_d-y)+ky_d*(vy_d-vy)+ay_d - Fy);            
+            Tx = (obj.m/T)*(kx_p*(x_d-x)+kx_d*(vx_d-vx)+ax_d);
+            Ty = (obj.m/T)*(ky_p*(y_d-y)+ky_d*(vy_d-vy)+ay_d);            
 
             % desired attitude from desired thrust direction
-            phi_d = asin(Tx*sin(psi)-Ty*cos(psi)); 
-            theta_d = asin(Tx*cos(psi)+Ty*sin(psi)/cos(phi_d));
+            phi_d = real(asin(Tx*sin(psi)-Ty*cos(psi))); 
+            theta_d = real(asin(Tx*cos(psi)+Ty*sin(psi)/cos(phi_d)));
             
             % control torques
-            tau_phi = Ix*(kphi_p*(phi_d-phi)+kphi_d*(-p) - tau_x);
-            tau_theta = Iy*(ktheta_p*(theta_d-theta)+ktheta_d*(-q) - tau_y);
-            tau_psi = Iz*(kpsi_p*(psi_d-psi)+kpsi_d*(-r) - tau_z);
+            tau_phi = Ix*(kphi_p*(phi_d-phi)+kphi_d*(-p));
+            tau_theta = Iy*(ktheta_p*(theta_d-theta)+ktheta_d*(-q));
+            tau_psi = Iz*(kpsi_p*(psi_d-psi)+kpsi_d*(-r));
             
             u = [T,tau_phi,tau_theta,tau_psi];
         end
@@ -128,18 +127,17 @@ classdef Quadcopter < handle
                 obj.state(9),obj.state(10),obj.state(11),obj.state(12));
             
             % external forces applied to quadrotor
-            [Fe,tau_e] = obj.getWrench();
-            [Fx,Fy,Fz] = deal(Fe(1),Fe(2),Fe(3));
-            [tau_x,tau_y,tau_z] = deal(tau_e(1),tau_e(2),tau_e(3));
+            [Fe,~] = obj.getWrench();
+            Fz = Fe(3);
             
             % compute dxi/dt
-            ax = Fx + (T/obj.m)*(cos(phi)*sin(theta)*cos(psi)+sin(phi)*sin(psi));
-            ay = Fy + (T/obj.m)*(cos(phi)*sin(theta)*sin(psi)-sin(phi)*cos(psi));
+            ax = (T/obj.m)*(cos(phi)*sin(theta)*cos(psi)+sin(phi)*sin(psi));
+            ay = (T/obj.m)*(cos(phi)*sin(theta)*sin(psi)-sin(phi)*cos(psi));
             az = Fz - obj.g + (T/obj.m)*(cos(phi)*cos(theta));
 
-            pdot = tau_x + ((Iy-Iz)/Ix)*q*r + (obj.Ir/Ix)*q*obj.Om_r + (obj.l/Ix)*tau_phi;
-            qdot = tau_y + ((Iz-Ix)/Iy)*p*r - (obj.Ir/Iy)*p*obj.Om_r + (obj.l/Iy)*tau_theta;
-            rdot = tau_z + ((Ix-Iy)/Iz)*p*q + (1/Iz)*tau_psi;
+            pdot = ((Iy-Iz)/Ix)*q*r + (obj.Ir/Ix)*q*obj.Om_r + (obj.l/Ix)*tau_phi;
+            qdot = ((Iz-Ix)/Iy)*p*r - (obj.Ir/Iy)*p*obj.Om_r + (obj.l/Iy)*tau_theta;
+            rdot = ((Ix-Iy)/Iz)*p*q + (1/Iz)*tau_psi;
 
             % integrate and update state
             state_dot = [vx,vy,vz,ax,ay,az,p,q,r,pdot,qdot,rdot];
@@ -189,8 +187,8 @@ classdef Quadcopter < handle
         end
         
         function [Fe,tau_e] = getWrench()
-            Fe = [2,-1,3];
-            tau_e = [1,-4,-2];
+            Fe = [7,0,3];
+            tau_e = [1,-2,0.45];
         end
 
     end

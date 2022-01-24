@@ -4,7 +4,7 @@ clc
 % simulation step
 step = 0.05;
 % sampling time and duration of experiment
-T = 100;
+T = 50;
 
 % init robot model
 robot = Quadcopter();
