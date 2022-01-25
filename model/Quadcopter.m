@@ -9,8 +9,8 @@ classdef Quadcopter < handle
         g       % gravity acceleration
         m       % mass
         l       % distance from com
-        I       % 3x1 inertia vector [Ix Iy Iz]
-        Ir     % blades inertia
+        I       % 3x3 inertia matrix
+        Ir      % blades inertia
         Om_r    % avg blades rotational velocity
         
         % gain values (1x2 vector [kp kd])
@@ -20,10 +20,13 @@ classdef Quadcopter < handle
         k_phi   % roll 
         k_theta % pitch
         k_psi   % yaw
+        k_wr    % wrench
         
-        % state of dynamic model (1x12 vector)
-        state % [x y z Vx Vy Vz phi theta psi p q r]
-        
+        % save last model values
+        state           % [x y z vx vy vz phi theta psi p q r] 1x12
+        controls        % [T tau_phi tau_theta tau_psi] 1x4
+        a_hat           % [ax ay az] 1x3 acceleration from accelerometer
+        f_hat           % [F_e tau_e] 1x6 estimated wrench
     end
     
     methods
@@ -37,7 +40,7 @@ classdef Quadcopter < handle
             obj.g = params(1);
             obj.m = params(2);
             obj.l = params(3);
-            obj.I = [params(4) params(5) params(6)];
+            obj.I = [params(4) 0 0; 0 params(5) 0; 0 0 params(6)];
             obj.Ir = params(7);
             obj.Om_r = params(8);
             obj.k_x = [gains(1),gains(2)];
@@ -46,11 +49,10 @@ classdef Quadcopter < handle
             obj.k_phi = [gains(7),gains(8)];
             obj.k_theta = [gains(9),gains(10)];
             obj.k_psi = [gains(11),gains(12)];
-        end
-        
-        function obj = update(obj,state)
-            % INIT inherits the setState function
-            obj.state = state;
+            obj.k_wr = [gains(13),gains(14)];
+            obj.f_hat = [0 0 3 zeros(1,3)];
+            obj.a_hat = zeros(1,3);
+            obj.controls = zeros(1,4);
         end
         
         function u = control(obj,traj)
@@ -74,11 +76,10 @@ classdef Quadcopter < handle
                 obj.state(9),obj.state(10),obj.state(11),obj.state(12));
             
             % external forces applied to quadrotor
-            [Fe,~] = obj.getWrench();
-            Fz = Fe(3);
+            Fz = obj.f_hat(3);
             
             % inertia
-            [Ix,Iy,Iz] = deal(obj.I(1),obj.I(2),obj.I(3));
+            [Ix,Iy,Iz] = deal(obj.I(1,1),obj.I(2,2),obj.I(3,3));
             
             % regulation
             [kx_p,kx_d] = deal(obj.k_x(1),obj.k_x(2));
@@ -107,6 +108,7 @@ classdef Quadcopter < handle
             tau_psi = Iz*(kpsi_p*(psi_d-psi)+kpsi_d*(-r));
             
             u = [T,tau_phi,tau_theta,tau_psi];
+            obj.controls = u;
         end
         
         function state = command(obj,u,t)
@@ -119,7 +121,7 @@ classdef Quadcopter < handle
             
             % retrieve values
             [T, tau_phi, tau_theta, tau_psi] = deal(u(1),u(2),u(3),u(4));
-            [Ix,Iy,Iz] = deal(obj.I(1),obj.I(2),obj.I(3));
+            [Ix,Iy,Iz] = deal(obj.I(1,1),obj.I(2,2),obj.I(3,3));
             
             [~,~,~,vx,vy,vz,phi,theta,psi,p,q,r] = deal(...
                 obj.state(1),obj.state(2),obj.state(3),obj.state(4),...
@@ -127,8 +129,9 @@ classdef Quadcopter < handle
                 obj.state(9),obj.state(10),obj.state(11),obj.state(12));
             
             % external forces applied to quadrotor
-            [Fe,~] = obj.getWrench();
-            Fz = Fe(3);
+            [F_e, tau_e] = Aerodynamics.ExternalWrenchEstimator(obj.m,obj.I,obj.k_wr,T,[p q r]',obj.a_hat',obj.f_hat',t);
+            obj.f_hat = [F_e' tau_e'];
+            Fz = obj.f_hat(3);
             
             % compute dxi/dt
             ax = (T/obj.m)*(cos(phi)*sin(theta)*cos(psi)+sin(phi)*sin(psi));
@@ -142,7 +145,8 @@ classdef Quadcopter < handle
             % integrate and update state
             state_dot = [vx,vy,vz,ax,ay,az,p,q,r,pdot,qdot,rdot];
             state = obj.state + state_dot*t;
-            obj.update(state);
+            obj.state = state;
+            obj.a_hat = [ax ay az];
         end
     end
     
@@ -181,16 +185,14 @@ classdef Quadcopter < handle
 
             kpsi_p = 10;
             kpsi_d = 10;
+            
+            kf_i = 0.3;
+            kt_i = 0.2;
 
             gains=[kx_p,kx_d,ky_p,ky_d,kz_p,kz_d,...
-                kphi_p,kphi_d,ktheta_p,ktheta_d,kpsi_p,kpsi_d];
+                kphi_p,kphi_d,ktheta_p,ktheta_d,kpsi_p,kpsi_d,...
+                kf_i,kt_i];
         end
-        
-        function [Fe,tau_e] = getWrench()
-            Fe = [7,0,3];
-            tau_e = [1,-2,0.45];
-        end
-
     end
 end
 

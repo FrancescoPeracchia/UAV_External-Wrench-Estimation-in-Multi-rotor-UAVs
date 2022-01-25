@@ -28,7 +28,7 @@ classdef SimQuadcopter < handle
         
         function obj = init(obj,state)
             % INIT the intial state
-            obj.quadcopter.update(state);
+            obj.quadcopter.state = state;
             [x,y,z,phi,theta,psi] = deal(state(1),state(2),state(3),state(7),state(8),state(9));
             obj.sim.simxSetObjectPosition(obj.id, obj.handle, -1, [x y z], obj.sim.simx_opmode_oneshot);
             obj.sim.simxSetObjectOrientation(obj.id, obj.handle, -1, [phi theta psi], obj.sim.simx_opmode_oneshot);
@@ -69,7 +69,7 @@ classdef SimQuadcopter < handle
             [~,wz] = obj.sim.simxGetFloatSignal(obj.id, 'UAV/state/velocity/angular/z', obj.sim.simx_opmode_streaming);
             
             state = [x y z vx vy vz abg2rpy([a b g]) wx wy wz];
-            obj.quadcopter.update(state);
+            obj.quadcopter.state = state;
             
             % trigger simulation
             obj.sim.simxSynchronousTrigger(obj.id);

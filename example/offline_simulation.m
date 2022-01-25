@@ -9,7 +9,7 @@ T = 50;
 % init robot model
 robot = Quadcopter();
 initial_state = zeros(1,12);
-robot.update(initial_state);
+robot.state = initial_state;
 
 % initialization of task
 trajectory = hovering(2,pi);
