@@ -50,7 +50,7 @@ classdef Quadcopter < handle
             obj.k_theta = [gains(9),gains(10)];
             obj.k_psi = [gains(11),gains(12)];
             obj.k_wr = [gains(13),gains(14)];
-            obj.f_hat = [0 0 3 zeros(1,3)];
+            obj.f_hat = zeros(1,6);
             obj.a_hat = zeros(1,3);
             obj.controls = zeros(1,4);
         end
@@ -90,7 +90,7 @@ classdef Quadcopter < handle
             [kpsi_p,kpsi_d] = deal(obj.k_psi(1),obj.k_psi(2));
             
             % height control
-            stab_z = (obj.g+kz_p*(z_d-z)+kz_d*(vz_d-vz)+az_d - Fz);
+            stab_z = (obj.g+kz_p*(z_d-z)+kz_d*(vz_d-vz)+az_d - Fz/obj.m);
             fl_z = obj.m/(cos(phi)*cos(theta));
             T = fl_z*stab_z;
             
@@ -129,8 +129,6 @@ classdef Quadcopter < handle
                 obj.state(9),obj.state(10),obj.state(11),obj.state(12));
             
             % external forces applied to quadrotor
-            [F_e, tau_e] = Aerodynamics.ExternalWrenchEstimator(obj.m,obj.I,obj.k_wr,T,[p q r]',obj.a_hat',obj.f_hat',t);
-            obj.f_hat = [F_e' tau_e'];
             Fz = obj.f_hat(3);
             
             % compute dxi/dt
@@ -146,7 +144,6 @@ classdef Quadcopter < handle
             state_dot = [vx,vy,vz,ax,ay,az,p,q,r,pdot,qdot,rdot];
             state = obj.state + state_dot*t;
             obj.state = state;
-            obj.a_hat = [ax ay az];
         end
     end
     
@@ -156,10 +153,10 @@ classdef Quadcopter < handle
             % GETPARAMS set quadrotor parameters
             g = 9.81;   % [ms^-2]
             l = 0.25;    % [m]
-            m = 2;      % [kg]
-            Ix = 0.5;   % [kg*m^2]
-            Iy = 0.5;
-            Iz = 0.9;
+            m = 0.5;      % [kg]
+            Ix = 0.0019;   % [kg*m^2]
+            Iy = 0.0019;
+            Iz = 0.0033;
             Ir = 0.005;
             Om_r = 70; % [s^-2]
             
@@ -186,8 +183,8 @@ classdef Quadcopter < handle
             kpsi_p = 10;
             kpsi_d = 10;
             
-            kf_i = 0.3;
-            kt_i = 0.2;
+            kf_i = 1.5;
+            kt_i = 0.5;
 
             gains=[kx_p,kx_d,ky_p,ky_d,kz_p,kz_d,...
                 kphi_p,kphi_d,ktheta_p,ktheta_d,kpsi_p,kpsi_d,...

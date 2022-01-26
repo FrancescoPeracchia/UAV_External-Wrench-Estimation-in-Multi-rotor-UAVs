@@ -10,6 +10,7 @@ T = 50;
 robot = Quadcopter();
 initial_state = zeros(1,12);
 robot.state = initial_state;
+robot.f_hat(3) = -3;
 
 % initialization of task
 trajectory = hovering(2,pi);
@@ -24,7 +25,7 @@ for current_time = 0:step:T
     
     % compute the control
     u = robot.control(traj);
-    disp(["control: ", u]);
+    disp(u)
     
     % feed the new input
     state = robot.command(u,step);

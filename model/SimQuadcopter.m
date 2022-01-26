@@ -44,7 +44,7 @@ classdef SimQuadcopter < handle
             u = obj.quadcopter.control(traj);
         end
         
-        function state = command(obj,u)
+        function state = command(obj,u,t)
             % COMMAND send commands to quadrotor and retrive state
             
             % send commands to simulator
@@ -64,12 +64,25 @@ classdef SimQuadcopter < handle
             [~,a] = obj.sim.simxGetFloatSignal(obj.id, 'UAV/state/orientation/alpha', obj.sim.simx_opmode_streaming);
             [~,b] = obj.sim.simxGetFloatSignal(obj.id, 'UAV/state/orientation/beta', obj.sim.simx_opmode_streaming);
             [~,g] = obj.sim.simxGetFloatSignal(obj.id, 'UAV/state/orientation/gamma', obj.sim.simx_opmode_streaming);
+            rpy = abg2rpy([a b g]);
             [~,wx] = obj.sim.simxGetFloatSignal(obj.id, 'UAV/state/velocity/angular/x', obj.sim.simx_opmode_streaming);
             [~,wy] = obj.sim.simxGetFloatSignal(obj.id, 'UAV/state/velocity/angular/y', obj.sim.simx_opmode_streaming);
             [~,wz] = obj.sim.simxGetFloatSignal(obj.id, 'UAV/state/velocity/angular/z', obj.sim.simx_opmode_streaming);
             
-            state = [x y z vx vy vz abg2rpy([a b g]) wx wy wz];
+            state = [x y z vx vy vz rpy wx wy wz];
             obj.quadcopter.state = state;
+            
+            % read acceleration from accelerometer
+            [~,ax] = obj.sim.simxGetFloatSignal(obj.id, 'UAV/sensor/acceleration/x', obj.sim.simx_opmode_streaming);
+            [~,ay] = obj.sim.simxGetFloatSignal(obj.id, 'UAV/sensor/acceleration/y', obj.sim.simx_opmode_streaming);
+            [~,az] = obj.sim.simxGetFloatSignal(obj.id, 'UAV/sensor/acceleration/z', obj.sim.simx_opmode_streaming);
+            
+            obj.quadcopter.a_hat = [ax ay az];
+            
+            % external forces applied to quadrotor
+            [m,I,k_wr,w,a_hat,f_hat] = deal(obj.quadcopter.m,obj.quadcopter.I,obj.quadcopter.k_wr,obj.quadcopter.state(10:12),obj.quadcopter.a_hat,obj.quadcopter.f_hat);      
+            [F_e, tau_e] = Aerodynamics.ExternalWrenchEstimator(m,I,k_wr,rpy,u,w',a_hat',f_hat');
+            obj.quadcopter.f_hat = obj.quadcopter.f_hat + [F_e(t)' tau_e(t)'];
             
             % trigger simulation
             obj.sim.simxSynchronousTrigger(obj.id);

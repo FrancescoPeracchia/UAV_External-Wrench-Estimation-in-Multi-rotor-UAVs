@@ -13,28 +13,29 @@ T = 10;
     
 % init robot model
 robot = SimQuadcopter(sim, id);
-initial_state = [0 0 0.1 0 0 0 0 0 0 0 0 0];
+initial_state = [0 0 0.2 0 0 0 0 0 0 0 0 0];
 robot.init(initial_state);
 
 % initialization of task
-trajectory = hovering(1);
+%trajectory = spirale();
+trajectory = hovering(1,pi);
 
 % control loop
 for current_time = 0:step:T
     
-    disp(["time: ", current_time]);
+    %disp(["time: ", current_time]);
     
     % get next desired position and orientation 
     traj = trajectory(current_time);
     
     % compute the control
     u = robot.control(traj);
-    disp(["control: ", u]);
     
     % send command to robot
-    state = robot.command(u);
-   
-    disp(["state: ", state]);
+    state = robot.command(u,step);
+    
+    %disp(["state: ", state]);
+    disp(["wrench: ", robot.quadcopter.f_hat]);
 end
 
 % close connection
