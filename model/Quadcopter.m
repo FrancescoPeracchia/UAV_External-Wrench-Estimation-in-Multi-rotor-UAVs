@@ -183,7 +183,7 @@ classdef Quadcopter < handle
             kpsi_p = 10;
             kpsi_d = 10;
             
-            kf_i = 1.5;
+            kf_i = 10;
             kt_i = 0.5;
 
             gains=[kx_p,kx_d,ky_p,ky_d,kz_p,kz_d,...
