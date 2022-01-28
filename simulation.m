@@ -35,7 +35,7 @@ for current_time = 0:step:T
     state = robot.command(u,step);
     
     %disp(["state: ", state]);
-    disp(["wrench: ", robot.quadcopter.f_hat]);
+    disp(["wrench: ", robot.quadcopter.F_hat]);
 end
 
 % close connection

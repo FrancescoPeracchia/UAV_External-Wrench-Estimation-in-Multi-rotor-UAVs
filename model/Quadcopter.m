@@ -26,7 +26,7 @@ classdef Quadcopter < handle
         state           % [x y z vx vy vz phi theta psi p q r] 1x12
         controls        % [T tau_phi tau_theta tau_psi] 1x4
         a_hat           % [ax ay az] 1x3 acceleration from accelerometer
-        f_hat           % [F_e tau_e] 1x6 estimated wrench
+        F_hat           % [f_e m_e] 1x6 estimated wrench
     end
     
     methods
@@ -50,7 +50,7 @@ classdef Quadcopter < handle
             obj.k_theta = [gains(9),gains(10)];
             obj.k_psi = [gains(11),gains(12)];
             obj.k_wr = [gains(13),gains(14)];
-            obj.f_hat = zeros(1,6);
+            obj.F_hat = zeros(1,6);
             obj.a_hat = zeros(1,3);
             obj.controls = zeros(1,4);
         end
@@ -76,7 +76,7 @@ classdef Quadcopter < handle
                 obj.state(9),obj.state(10),obj.state(11),obj.state(12));
             
             % external forces applied to quadrotor
-            Fz = obj.f_hat(3);
+            fz = obj.F_hat(3);
             
             % inertia
             [Ix,Iy,Iz] = deal(obj.I(1,1),obj.I(2,2),obj.I(3,3));
@@ -90,7 +90,7 @@ classdef Quadcopter < handle
             [kpsi_p,kpsi_d] = deal(obj.k_psi(1),obj.k_psi(2));
             
             % height control
-            stab_z = (obj.g+kz_p*(z_d-z)+kz_d*(vz_d-vz)+az_d - Fz/obj.m);
+            stab_z = (obj.g+kz_p*(z_d-z)+kz_d*(vz_d-vz)+az_d - fz/obj.m);
             fl_z = obj.m/(cos(phi)*cos(theta));
             T = fl_z*stab_z;
             
@@ -129,12 +129,12 @@ classdef Quadcopter < handle
                 obj.state(9),obj.state(10),obj.state(11),obj.state(12));
             
             % external forces applied to quadrotor
-            Fz = obj.f_hat(3);
+            fz = obj.F_hat(3);
             
             % compute dxi/dt
             ax = (T/obj.m)*(cos(phi)*sin(theta)*cos(psi)+sin(phi)*sin(psi));
             ay = (T/obj.m)*(cos(phi)*sin(theta)*sin(psi)-sin(phi)*cos(psi));
-            az = Fz - obj.g + (T/obj.m)*(cos(phi)*cos(theta));
+            az = fz - obj.g + (T/obj.m)*(cos(phi)*cos(theta));
 
             pdot = ((Iy-Iz)/Ix)*q*r + (obj.Ir/Ix)*q*obj.Om_r + (obj.l/Ix)*tau_phi;
             qdot = ((Iz-Ix)/Iy)*p*r - (obj.Ir/Iy)*p*obj.Om_r + (obj.l/Iy)*tau_theta;
@@ -184,11 +184,11 @@ classdef Quadcopter < handle
             kpsi_d = 10;
             
             kf_i = 10;
-            kt_i = 0.5;
+            km_i = 0.5;
 
             gains=[kx_p,kx_d,ky_p,ky_d,kz_p,kz_d,...
                 kphi_p,kphi_d,ktheta_p,ktheta_d,kpsi_p,kpsi_d,...
-                kf_i,kt_i];
+                kf_i,km_i];
         end
     end
 end
