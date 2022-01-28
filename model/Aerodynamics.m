@@ -3,10 +3,10 @@ classdef Aerodynamics
     %   Detailed explanation goes here
     
     methods(Static)
-        function [f_hat,m_hat] = ExternalWrenchEstimator(mass,I,k,u,w,a,f)
+        function [f_hat,m_hat] = ExternalWrenchEstimator(mass,I,k,u,w,a,F)
             % EXTERNALWRENCHESTIMATOR estimates the external wrench
             %   input 
-            %    - m: object mass
+            %    - mass: object mass
             %    - I: inertia matrix
             %    - k: force and torque gains
             %    - u: controls
@@ -18,7 +18,7 @@ classdef Aerodynamics
             %    - tau_hat: estimated external torque
 
             [kf_i,km_i] = deal(k(1),k(2));
-            [f_e, m_e] = deal(f(1:3),f(4:6));
+            [f_e, m_e] = deal(F(1:3),F(4:6));
             
             f = [0 0 u(1)]';
             m = u(2:4)';         

@@ -34,11 +34,6 @@ classdef SimQuadcopter < handle
             obj.sim.simxSetObjectOrientation(obj.id, obj.handle, -1, [phi theta psi], obj.sim.simx_opmode_oneshot);
         end
         
-        function obj = update(obj,state)
-            % UPDATE inherits the update function
-            obj.quadcopter.update(state);
-        end
-        
         function u = control(obj,traj)
             % CONTROL inherits the control function
             u = obj.quadcopter.control(traj);
@@ -82,7 +77,7 @@ classdef SimQuadcopter < handle
             % external forces applied to quadrotor
             [m,I,k_wr,w,a_hat,F_hat] = deal(obj.quadcopter.m,obj.quadcopter.I,obj.quadcopter.k_wr,obj.quadcopter.state(10:12),obj.quadcopter.a_hat,obj.quadcopter.F_hat);      
             [f_e, m_e] = Aerodynamics.ExternalWrenchEstimator(m,I,k_wr,u,w',a_hat',F_hat');
-            obj.quadcopter.F_hat = obj.quadcopter.F_hat + [f_e(t)' m_e(t)'];
+            obj.quadcopter.F_hat = obj.quadcopter.F_hat +  [f_e(t)' m_e(t)'];  
             
             % trigger simulation
             obj.sim.simxSynchronousTrigger(obj.id);

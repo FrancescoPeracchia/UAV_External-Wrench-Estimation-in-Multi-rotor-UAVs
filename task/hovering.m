@@ -1,7 +1,4 @@
-function trajectory = hovering(h, yaw)
+function trajectory = hovering(h)
     position = [0, 0, h];
-    if ~exist('yaw','var')
-        yaw = 0;
-    end
-    trajectory = @(t)[position; [0 0 yaw]; zeros(1,3); zeros(1,3)];
+    trajectory = @(t)[position; zeros(1,9); zeros(1,3); zeros(1,3)];
 end

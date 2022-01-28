@@ -130,7 +130,7 @@ classdef Quadcopter < handle
             
             % external forces applied to quadrotor
             fz = obj.F_hat(3);
-            
+        
             % compute dxi/dt
             ax = (T/obj.m)*(cos(phi)*sin(theta)*cos(psi)+sin(phi)*sin(psi));
             ay = (T/obj.m)*(cos(phi)*sin(theta)*sin(psi)-sin(phi)*cos(psi));
@@ -171,19 +171,19 @@ classdef Quadcopter < handle
             ky_p = 0.1;
             ky_d = 0.5;
 
-            kz_p = 2;
-            kz_d = 3;
+            kz_p = 1;
+            kz_d = 2;
 
-            kphi_p = 20;
-            kphi_d = 25;
+            kphi_p = 2;
+            kphi_d = 2.5;
 
-            ktheta_p = 10;
-            ktheta_d = 15;
+            ktheta_p = 2;
+            ktheta_d = 3;
 
-            kpsi_p = 10;
-            kpsi_d = 10;
+            kpsi_p = 5;
+            kpsi_d = 5;
             
-            kf_i = 10;
+            kf_i = 8;
             km_i = 0.5;
 
             gains=[kx_p,kx_d,ky_p,ky_d,kz_p,kz_d,...
