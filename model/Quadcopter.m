@@ -76,7 +76,8 @@ classdef Quadcopter < handle
                 obj.state(9),obj.state(10),obj.state(11),obj.state(12));
             
             % external forces applied to quadrotor
-            fz = obj.F_hat(3);
+            f_e = obj.F_hat(1:3);
+            
             
             % inertia
             [Ix,Iy,Iz] = deal(obj.I(1,1),obj.I(2,2),obj.I(3,3));
@@ -90,7 +91,7 @@ classdef Quadcopter < handle
             [kpsi_p,kpsi_d] = deal(obj.k_psi(1),obj.k_psi(2));
             
             % height control
-            stab_z = (obj.g+kz_p*(z_d-z)+kz_d*(vz_d-vz)+az_d - fz/obj.m);
+            stab_z = (obj.g+kz_p*(z_d-z)+kz_d*(vz_d-vz)+az_d - f_e(3)/obj.m);
             fl_z = obj.m/(cos(phi)*cos(theta));
             T = fl_z*stab_z;
             
