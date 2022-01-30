@@ -76,8 +76,8 @@ classdef SimQuadcopter < handle
             
             % external forces applied to quadrotor
             [m,I,k_wr,w,a_hat,F_hat] = deal(obj.quadcopter.m,obj.quadcopter.I,obj.quadcopter.k_wr,obj.quadcopter.state(10:12),obj.quadcopter.a_hat,obj.quadcopter.F_hat);      
-            [f_e, m_e] = Aerodynamics.ExternalWrenchEstimator(m,I,k_wr,u,w',a_hat',F_hat');
-            obj.quadcopter.F_hat = obj.quadcopter.F_hat +  [f_e(t)' m_e(t)'];  
+            [f_e, m_e] = Aerodynamics.ExternalWrenchEstimator(m,I,k_wr,u,w',a_hat',F_hat',t);
+            obj.quadcopter.F_hat = [f_e' m_e'];  
             
             % trigger simulation
             obj.sim.simxSynchronousTrigger(obj.id);

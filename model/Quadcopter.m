@@ -76,8 +76,7 @@ classdef Quadcopter < handle
                 obj.state(9),obj.state(10),obj.state(11),obj.state(12));
             
             % external forces applied to quadrotor
-            f_e = obj.F_hat(1:3);
-            
+            [f_e, m_e] = deal(obj.F_hat(1:3),obj.F_hat(4:6));
             
             % inertia
             [Ix,Iy,Iz] = deal(obj.I(1,1),obj.I(2,2),obj.I(3,3));
@@ -104,9 +103,9 @@ classdef Quadcopter < handle
             theta_d = real(asin(Tx*cos(psi)+Ty*sin(psi)/cos(phi_d)));
             
             % control torques
-            tau_phi = Ix*(kphi_p*(phi_d-phi)+kphi_d*(-p));
-            tau_theta = Iy*(ktheta_p*(theta_d-theta)+ktheta_d*(-q));
-            tau_psi = Iz*(kpsi_p*(psi_d-psi)+kpsi_d*(-r));
+            tau_phi = Ix*(kphi_p*(phi_d-phi)+kphi_d*(-p)) - m_e(1);
+            tau_theta = Iy*(ktheta_p*(theta_d-theta)+ktheta_d*(-q)) - m_e(2);
+            tau_psi = Iz*(kpsi_p*(psi_d-psi)+kpsi_d*(-r)) - m_e(3);
             
             u = [T,tau_phi,tau_theta,tau_psi];
             obj.controls = u;
@@ -185,7 +184,7 @@ classdef Quadcopter < handle
             kpsi_d = 5;
             
             kf_i = 8;
-            km_i = 0.5;
+            km_i = 6;
 
             gains=[kx_p,kx_d,ky_p,ky_d,kz_p,kz_d,...
                 kphi_p,kphi_d,ktheta_p,ktheta_d,kpsi_p,kpsi_d,...
