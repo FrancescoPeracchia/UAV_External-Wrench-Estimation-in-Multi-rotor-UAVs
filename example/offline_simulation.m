@@ -4,16 +4,16 @@ clc
 % simulation step
 step = 0.05;
 % sampling time and duration of experiment
-T = 50;
+T = 20;
 
 % init robot model
 robot = Quadcopter();
 initial_state = zeros(1,12);
 robot.state = initial_state;
-robot.f_hat(3) = -3;
+robot.F_hat(3) = -3;
 
 % initialization of task
-trajectory = hovering(2,pi);
+trajectory = hovering(2);
 
 % control loop
 for current_time = 0:step:T
