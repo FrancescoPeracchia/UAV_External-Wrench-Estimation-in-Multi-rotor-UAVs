@@ -9,7 +9,7 @@ clc
 sim.simxSetFloatSignal(id, 'Simulation/start', 0, sim.simx_opmode_oneshot);
 
 % sampling time and duration of experiment
-T = 30;
+T = 60;
     
 % init robot model
 robot = SimQuadcopter(sim, id);
@@ -23,7 +23,8 @@ trajectory = hovering(1);
 % control loop
 for current_time = 0:step:T
     
-    %disp(["time: ", current_time]);
+    
+    disp(["time: ", current_time]);
     
     % get next desired position and orientation 
     traj = trajectory(current_time);
