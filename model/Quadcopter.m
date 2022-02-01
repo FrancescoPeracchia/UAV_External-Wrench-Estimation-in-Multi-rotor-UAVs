@@ -89,20 +89,17 @@ classdef Quadcopter < handle
             [ktheta_p,ktheta_d] = deal(obj.k_theta(1),obj.k_theta(2));
             [kpsi_p,kpsi_d] = deal(obj.k_psi(1),obj.k_psi(2));
             
-            % height control
-            stab_z = (obj.g+kz_p*(z_d-z)+kz_d*(vz_d-vz)+az_d - f_e(3)/obj.m);
-            fl_z = obj.m/(cos(phi)*cos(theta));
-            T = fl_z*stab_z;
-            
             % desired thrust direction
-            Tx = (obj.m/T)*(kx_p*(x_d-x)+kx_d*(vx_d-vx)+ax_d-f_e(1));
-            Ty = (obj.m/T)*(ky_p*(y_d-y)+ky_d*(vy_d-vy)+ay_d-f_e(2));            
+            fx = obj.m*(kx_p*(x_d-x)+kx_d*(vx_d-vx)+ax_d) - f_e(1);
+            fy = obj.m*(ky_p*(y_d-y)+ky_d*(vy_d-vy)+ay_d) - f_e(2);            
+            fz = obj.m*(kz_p*(z_d-z)+kz_d*(vz_d-vz)+az_d) + obj.m*obj.g - f_e(3);
 
             % desired attitude from desired thrust direction
-            phi_d = real(asin(Tx*sin(psi)-Ty*cos(psi))); 
-            theta_d = real(asin(Tx*cos(psi)+Ty*sin(psi)/cos(phi_d)));
+            phi_d = real(asin(fx/fz*sin(psi)-fy/fz*cos(psi))); 
+            theta_d = real(asin(fx/fz*cos(psi)+fy/fz*sin(psi)/cos(phi_d)));
             
             % control torques
+            T = norm([fx fy fz]);
             tau_phi = Ix*(kphi_p*(phi_d-phi)+kphi_d*(-p))-m_e(1);
             tau_theta = Iy*(ktheta_p*(theta_d-theta)+ktheta_d*(-q))-m_e(2);
             tau_psi = Iz*(kpsi_p*(psi_d-psi)+kpsi_d*(-r))-m_e(3);
@@ -151,14 +148,14 @@ classdef Quadcopter < handle
        
         function params = getDefaultParams()
             % GETPARAMS set quadrotor parameters
-            g = 9.81;   % [ms^-2]
-            l = 0.25;    % [m]
-            m = 0.5;      % [kg]
-            Ix = 0.0019;   % [kg*m^2]
+            g = 9.81;       % [ms^-2]
+            l = 0.25;       % [m]
+            m = 0.5;        % [kg]
+            Ix = 0.0019;    % [kg*m^2]
             Iy = 0.0019;
             Iz = 0.0033;
             Ir = 0.005;
-            Om_r = 70; % [s^-2]
+            Om_r = 70;      % [s^-2]
             
             params = [g;m;l;Ix;Iy;Iz;Ir;Om_r];
         end
