@@ -48,6 +48,7 @@ classdef SimQuadcopter < handle
             obj.sim.simxSetFloatSignal(obj.id, 'UAV/control/torque/phi', tau_phi, obj.sim.simx_opmode_oneshot);
             obj.sim.simxSetFloatSignal(obj.id, 'UAV/control/torque/theta', tau_theta, obj.sim.simx_opmode_oneshot);
             obj.sim.simxSetFloatSignal(obj.id, 'UAV/control/torque/psi', tau_psi, obj.sim.simx_opmode_oneshot);
+           
             
             % read state from simulator
             [~,x] = obj.sim.simxGetFloatSignal(obj.id, 'UAV/state/position/x', obj.sim.simx_opmode_streaming);

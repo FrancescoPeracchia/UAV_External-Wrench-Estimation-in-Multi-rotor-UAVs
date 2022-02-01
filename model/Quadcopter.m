@@ -95,17 +95,17 @@ classdef Quadcopter < handle
             T = fl_z*stab_z;
             
             % desired thrust direction
-            Tx = obj.m*(kx_p*(x_d-x)+kx_d*(vx_d-vx)+ax_d);
-            Ty = obj.m*(ky_p*(y_d-y)+ky_d*(vy_d-vy)+ay_d);
+            Tx = (obj.m/T)*(kx_p*(x_d-x)+kx_d*(vx_d-vx)+ax_d-f_e(1));
+            Ty = (obj.m/T)*(ky_p*(y_d-y)+ky_d*(vy_d-vy)+ay_d-f_e(2));            
 
             % desired attitude from desired thrust direction
             phi_d = real(asin(Tx*sin(psi)-Ty*cos(psi))); 
             theta_d = real(asin(Tx*cos(psi)+Ty*sin(psi)/cos(phi_d)));
             
             % control torques
-            tau_phi = Ix*(kphi_p*(phi_d-phi)+kphi_d*(-p)) - m_e(1);
-            tau_theta = Iy*(ktheta_p*(theta_d-theta)+ktheta_d*(-q)) - m_e(2);
-            tau_psi = Iz*(kpsi_p*(psi_d-psi)+kpsi_d*(-r)) - m_e(3);
+            tau_phi = Ix*(kphi_p*(phi_d-phi)+kphi_d*(-p))-m_e(1);
+            tau_theta = Iy*(ktheta_p*(theta_d-theta)+ktheta_d*(-q))-m_e(2);
+            tau_psi = Iz*(kpsi_p*(psi_d-psi)+kpsi_d*(-r))-m_e(3);
             
             u = [T,tau_phi,tau_theta,tau_psi];
             obj.controls = u;
@@ -134,11 +134,11 @@ classdef Quadcopter < handle
             % compute dxi/dt
             ax = (T/obj.m)*(cos(phi)*sin(theta)*cos(psi)+sin(phi)*sin(psi));
             ay = (T/obj.m)*(cos(phi)*sin(theta)*sin(psi)-sin(phi)*cos(psi));
-            az = fz/obj.m - obj.g + (T/obj.m)*(cos(phi)*cos(theta));
+            az = fz - obj.g + (T/obj.m)*(cos(phi)*cos(theta));
 
-            pdot = 1/Ix*((Iy-Iz)*q*r + obj.Ir*q*obj.Om_r + obj.l*tau_phi);
-            qdot = 1/Iy*((Iz-Ix)*p*r - obj.Ir*p*obj.Om_r + obj.l*tau_theta);
-            rdot = 1/Iz*((Ix-Iy)*p*q + tau_psi);
+            pdot = ((Iy-Iz)/Ix)*q*r + (obj.Ir/Ix)*q*obj.Om_r + (obj.l/Ix)*tau_phi;
+            qdot = ((Iz-Ix)/Iy)*p*r - (obj.Ir/Iy)*p*obj.Om_r + (obj.l/Iy)*tau_theta;
+            rdot = ((Ix-Iy)/Iz)*p*q + (1/Iz)*tau_psi;
 
             % integrate and update state
             state_dot = [vx,vy,vz,ax,ay,az,p,q,r,pdot,qdot,rdot];
@@ -165,26 +165,26 @@ classdef Quadcopter < handle
         
         function gains = getGains()
             % SETGAINS set gains values for control
-            kx_p = 1e-2;
-            kx_d = 5e-2;
+            kx_p = 2;
+            kx_d = 4;
 
-            ky_p = 1e-2;
-            ky_d = 5e-2;
+            ky_p = 2;
+            ky_d = 4;
 
-            kz_p = 1;
-            kz_d = 2;
+            kz_p = 4;
+            kz_d = 8;
 
-            kphi_p = 2;
-            kphi_d = 2.5;
+            kphi_p = 70;
+            kphi_d = 60;
 
-            ktheta_p = 2;
-            ktheta_d = 3;
+            ktheta_p = 60;
+            ktheta_d = 50;
 
             kpsi_p = 5;
-            kpsi_d = 5;
+            kpsi_d = 10;
             
-            kf_i = 8;
-            km_i = 6;
+            kf_i = 2;
+            km_i = 3;
 
             gains=[kx_p,kx_d,ky_p,ky_d,kz_p,kz_d,...
                 kphi_p,kphi_d,ktheta_p,ktheta_d,kpsi_p,kpsi_d,...
