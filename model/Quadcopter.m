@@ -171,17 +171,17 @@ classdef Quadcopter < handle
             kz_p = 4;
             kz_d = 8;
 
-            kphi_p = 70;
+            kphi_p = 100;
             kphi_d = 60;
 
-            ktheta_p = 60;
-            ktheta_d = 50;
+            ktheta_p = 100;
+            ktheta_d = 60;
 
-            kpsi_p = 5;
-            kpsi_d = 10;
+            kpsi_p = 100;
+            kpsi_d = 60;
             
             kf_i = 2;
-            km_i = 3;
+            km_i = 6;
 
             gains=[kx_p,kx_d,ky_p,ky_d,kz_p,kz_d,...
                 kphi_p,kphi_d,ktheta_p,ktheta_d,kpsi_p,kpsi_d,...
