@@ -80,12 +80,12 @@ classdef SimQuadcopter < handle
             [f_e, m_e] = Aerodynamics.ExternalWrenchEstimator(m,I,k_wr,u,w',a_hat',F_hat',t);
             obj.quadcopter.F_hat = [f_e' m_e'];  
 
-            %apply contact detection
-            tau_ext = [tau_phi,tau_theta,tau_psi];
-            residual_contact = contact_detection.contact_det(m_e,tau_ext);
-            obj.sim.simxSetFloatSignal(obj.id, 'UAV/control/torque/phi_residual', residual_contact(1), obj.sim.simx_opmode_oneshot);
-            obj.sim.simxSetFloatSignal(obj.id, 'UAV/control/torque/theta_residual', residual_contact(2), obj.sim.simx_opmode_oneshot);
-            obj.sim.simxSetFloatSignal(obj.id, 'UAV/control/torque/psi_residual', residual_contact(3), obj.sim.simx_opmode_oneshot);
+            % apply contact detection
+            tau = [tau_phi,tau_theta,tau_psi];
+            residual = Aerodynamics.contactDetection(m_e,tau);
+            obj.sim.simxSetFloatSignal(obj.id, 'UAV/aerodynamics/residual/phi', residual(1), obj.sim.simx_opmode_oneshot);
+            obj.sim.simxSetFloatSignal(obj.id, 'UAV/aerodynamics/residual/theta', residual(2), obj.sim.simx_opmode_oneshot);
+            obj.sim.simxSetFloatSignal(obj.id, 'UAV/aerodynamics/residual/psi', residual(3), obj.sim.simx_opmode_oneshot);
             
             % trigger simulation
             obj.sim.simxSynchronousTrigger(obj.id);

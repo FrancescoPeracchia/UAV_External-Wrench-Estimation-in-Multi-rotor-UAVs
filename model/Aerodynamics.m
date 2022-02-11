@@ -1,6 +1,7 @@
 classdef Aerodynamics
-    %AERODYNAMICS Summary of this class goes here
-    %   Detailed explanation goes here
+    %AERODYNAMICS Static methods based on aerodynamics 
+    %   ExternalWrenchEstimator
+    %   ContactDetection
     
     methods(Static)
         function [f_hat,m_hat] = ExternalWrenchEstimator(mass,I,k,u,w,a,F_e,t)
@@ -33,6 +34,17 @@ classdef Aerodynamics
             
             f_hat = f_dt;
             m_hat = km_i*(I*w - m_dt);             
+        end
+        
+        function [residual_tau] = contactDetection(m_hat,tau)
+            % Contact detection 
+            %   input 
+            %    - tau_hat: estimated aerodinamic torque
+            %    - tau: control torques
+            %   output
+            %    - residual_tau : aerodinatic residual torque
+            
+            residual_tau = tau - m_hat;
         end
     end
 end
