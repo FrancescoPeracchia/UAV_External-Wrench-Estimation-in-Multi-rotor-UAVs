@@ -78,7 +78,13 @@ classdef SimQuadcopter < handle
             % external forces applied to quadrotor
             [m,I,k_wr,w,a_hat,F_hat] = deal(obj.quadcopter.m,obj.quadcopter.I,obj.quadcopter.k_wr,obj.quadcopter.state(10:12),obj.quadcopter.a_hat,obj.quadcopter.F_hat);      
             [f_e, m_e] = Aerodynamics.ExternalWrenchEstimator(m,I,k_wr,u,w',a_hat',F_hat',t);
-            obj.quadcopter.F_hat = [f_e' m_e'];  
+            obj.quadcopter.F_hat = [f_e' m_e']; 
+            obj.sim.simxSetFloatSignal(obj.id, 'UAV/aerodynamics/wrench/fx', f_e(1), obj.sim.simx_opmode_oneshot);
+            obj.sim.simxSetFloatSignal(obj.id, 'UAV/aerodynamics/wrench/fy', f_e(2), obj.sim.simx_opmode_oneshot);
+            obj.sim.simxSetFloatSignal(obj.id, 'UAV/aerodynamics/wrench/fz', f_e(3), obj.sim.simx_opmode_oneshot);
+            obj.sim.simxSetFloatSignal(obj.id, 'UAV/aerodynamics/wrench/mx', m_e(1), obj.sim.simx_opmode_oneshot);
+            obj.sim.simxSetFloatSignal(obj.id, 'UAV/aerodynamics/wrench/my', m_e(2), obj.sim.simx_opmode_oneshot);
+            obj.sim.simxSetFloatSignal(obj.id, 'UAV/aerodynamics/wrench/mz', m_e(3), obj.sim.simx_opmode_oneshot);
 
             % apply contact detection
             tau = [tau_phi,tau_theta,tau_psi];
