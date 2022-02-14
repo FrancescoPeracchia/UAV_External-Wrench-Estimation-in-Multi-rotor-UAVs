@@ -36,7 +36,7 @@ classdef Aerodynamics
             m_hat = km_i*(I*w - m_dt);             
         end
         
-        function [residual_tau] = contactDetection(m_hat,tau)
+        function [residual_tau, detected] = contactDetection(m_hat,tau)
             % Contact detection 
             %   input 
             %    - tau_hat: estimated aerodinamic torque
@@ -44,7 +44,14 @@ classdef Aerodynamics
             %   output
             %    - residual_tau : aerodinatic residual torque
             
+            threshold = 1.0;
+            detected = false;
+            
             residual_tau = tau - m_hat;
+            
+            if norm(residual_tau) > threshold
+                detected = true;
+            end
         end
     end
 end
