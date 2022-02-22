@@ -9,7 +9,7 @@ clc
 sim.simxSetFloatSignal(id, 'Simulation/start', 0, sim.simx_opmode_oneshot);
 
 % sampling time and duration of experiment
-T = 30;
+T = 20;
     
 % init robot model
 robot = SimQuadcopter(sim, id);

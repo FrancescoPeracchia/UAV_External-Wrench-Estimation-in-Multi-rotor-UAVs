@@ -88,10 +88,7 @@ classdef SimQuadcopter < handle
 
             % apply contact detection
             tau = [tau_phi,tau_theta,tau_psi];
-            [residual, detected] = Aerodynamics.contactDetection(m_e,tau);
-            if detected
-                disp('detected!')
-            end
+            [residual, detected] = Aerodynamics.ContactDetection(m_e,tau);
             obj.sim.simxSetFloatSignal(obj.id, 'UAV/aerodynamics/residual/phi', residual(1), obj.sim.simx_opmode_oneshot);
             obj.sim.simxSetFloatSignal(obj.id, 'UAV/aerodynamics/residual/theta', residual(2), obj.sim.simx_opmode_oneshot);
             obj.sim.simxSetFloatSignal(obj.id, 'UAV/aerodynamics/residual/psi', residual(3), obj.sim.simx_opmode_oneshot);
