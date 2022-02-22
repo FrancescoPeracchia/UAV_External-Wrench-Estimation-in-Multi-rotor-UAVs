@@ -21,7 +21,12 @@ robot.init(initial_state);
 trajectory = hovering(1);
 
 % control loop
-for current_time = 0:step:T
+wrench = zeros(2,T/step);
+t = 0:step:T;
+for i = 1:length(t)
+    
+    % simulation time
+    current_time = t(i);
     
     % get next desired position and orientation 
     traj = trajectory(current_time);
@@ -32,11 +37,14 @@ for current_time = 0:step:T
     % send command to robot
     state = robot.command(u,step);
     
-    disp(["time: ", current_time, "wrench: ", robot.quadcopter.F_hat]);
+    % display
+    F_e = robot.quadcopter.F_hat; 
+    disp(["time: ", current_time, "wrench: ", F_e]);
+    wrench(:,i) = [norm(F_e(1:3)); norm(F_e(4:6))];
 end
 
 % close connection
 API.simClose(sim,id)
 
 % plot results
-%plots;
+plots;

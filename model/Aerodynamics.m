@@ -44,7 +44,7 @@ classdef Aerodynamics
             %   output
             %    - residual_tau : aerodinatic residual torque
             
-            threshold = 0.5;
+            threshold = 0.2;
             detected = false;
             
             residual_tau = tau - m_hat;
