@@ -21,8 +21,8 @@ robot.init(initial_state);
 trajectory = hovering(1);
 
 % control loop
-wrench = zeros(2,T/step);
 t = 0:step:T;
+wrench = zeros(2,T/step);
 for i = 1:length(t)
     
     % simulation time
@@ -39,8 +39,8 @@ for i = 1:length(t)
     
     % display
     F_e = robot.quadcopter.F_hat; 
-    disp(["time: ", current_time, "wrench: ", F_e]);
     wrench(:,i) = [norm(F_e(1:3)); norm(F_e(4:6))];
+    disp(["time: ", current_time, "wrench: ", F_e]);
 end
 
 % close connection
