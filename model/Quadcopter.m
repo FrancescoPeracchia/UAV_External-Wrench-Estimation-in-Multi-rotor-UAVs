@@ -98,11 +98,12 @@ classdef Quadcopter < handle
             phi_d = real(asin(fx/fz*sin(psi)-fy/fz*cos(psi))); 
             theta_d = real(asin(fx/fz*cos(psi)+fy/fz*sin(psi)/cos(phi_d)));
             
-            % control torques
+            % control inputs
             T = norm([fx fy fz]);
-            tau_phi = Ix*(kphi_p*(phi_d-phi)+kphi_d*(-p))-m_e(1);
-            tau_theta = Iy*(ktheta_p*(theta_d-theta)+ktheta_d*(-q))-m_e(2);
-            tau_psi = Iz*(kpsi_p*(psi_d-psi)+kpsi_d*(-r))-m_e(3);
+            cr = cross(obj.I*[p q r]',[p q r]');
+            tau_phi = Ix*(kphi_p*(phi_d-phi)+kphi_d*(-p)) + cr(1) - m_e(1);
+            tau_theta = Iy*(ktheta_p*(theta_d-theta)+ktheta_d*(-q)) + cr(2) - m_e(2);
+            tau_psi = Iz*(kpsi_p*(psi_d-psi)+kpsi_d*(-r)) + cr(3) - m_e(3);
             
             u = [T,tau_phi,tau_theta,tau_psi];
             obj.controls = u;
