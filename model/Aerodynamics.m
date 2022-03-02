@@ -12,7 +12,7 @@ classdef Aerodynamics
             %    - k: force and torque gains
             %    - u: controls
             %    - w: angular velocity of the body
-            %    - a: acceleration from accelerometer sensor
+            %    - a: acceleration from IMU
             %    - t: dt
             %   output
             %    - f_hat:   estimated external force
