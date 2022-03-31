@@ -13,22 +13,23 @@ robot.state = initial_state;
 robot.F_hat(3) = -3;
 
 % initialization of task
-trajectory = hovering(2);
+trajectory = hovering(1);
 
 % control loop
-for current_time = 0:step:T
+t = 0:step:T;
+for i = 1:length(t)
     
-    disp(["time: ", current_time]);
+    % simulation time
+    current_time = t(i);
     
     % get next desired position and orientation 
     traj = trajectory(current_time);
     
     % compute the control
     u = robot.control(traj);
-    disp(u)
     
-    % feed the new input
+    % send command to robot
     state = robot.command(u,step);
     
-    disp(["state: ", state]);
+    disp(["time: ", current_time, "state: ", state]);
 end
