@@ -39,9 +39,11 @@ We tested the external wrench estimation and contact detection, in the following
 - in presence of wind action and not uniformly distributed load mass
 
 
-### Francesco Starna 
-### Francesco Peracchia 
-### Francesco Vincelli
+## Authors
+- [Francesco Starna](https://github.com/daydroidmuchiri)
+- [Francesco Peracchia](https://github.com/kevinwairi)
+- [Francesco Vincelli](https://github.com/kevinwairi)
+- Add your clickable username here. It should point to your GitHub account. 
 
 
 https://user-images.githubusercontent.com/49724442/161348200-a175f677-54da-4a05-b397-c92ea12cb9fd.mp4
