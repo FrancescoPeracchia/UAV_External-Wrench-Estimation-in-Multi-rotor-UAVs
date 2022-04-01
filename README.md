@@ -29,10 +29,10 @@ Two task trajectories are considered: a hovering and an elicoidal trajectory.
 We tested the external wrench estimation and contact detection, in the following cases:
 
 
-in presence of wind action only
-in presence of a continuous contact action but in absence of wind action
-in presence of a continuous contact action and of wind action
-in presence of wind action and not uniformly distributed load mass
+-in presence of wind action only
+-in presence of a continuous contact action but in absence of wind action
+-in presence of a continuous contact action and of wind action
+-in presence of wind action and not uniformly distributed load mass
 
 
 
