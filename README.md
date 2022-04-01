@@ -1,6 +1,7 @@
-# UExternal Wrench Estimation in Multi-rotor UAVs
+# External Wrench Estimation in Multi-rotor UAVs
 
 Project for the first module of the Electives in Robotics / Control Problems in Robotics exam at Sapienza University of Rome
+An External Wrench Estimator is proposed, this algorithm is described in 'Simultaneous Contact and Aerodynamic Force Estimation (s-CAFE) for Aerial Robots' ![GitHub Light](https://arxiv.org/abs/1810.12908)
 
 
 ## Simulation Environment
