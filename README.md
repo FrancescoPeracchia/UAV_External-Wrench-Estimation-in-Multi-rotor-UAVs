@@ -30,7 +30,7 @@ We tested the external wrench estimation and contact detection, in the following
 
 
 Markup : 1.in presence of wind action only
-2.in presence of a continuous contact action but in absence of wind action
+         2.in presence of a continuous contact action but in absence of wind action
 
 in presence of a continuous contact action and of wind action
 
