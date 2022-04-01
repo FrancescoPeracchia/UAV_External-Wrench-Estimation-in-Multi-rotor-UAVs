@@ -16,11 +16,11 @@ The project consists of two main modules:
 
 The Matlab application is made up of three main classes:
 
-Quadrotor : implements the system dynamics and provides the control design for tracking task
+- Quadrotor : implements the system dynamics and provides the control design for tracking task
 
-Aerodynamics : contains the wrench estimation algorithm and the contact detection procedure
+- Aerodynamics : contains the wrench estimation algorithm and the contact detection procedure
 
-QuadrotorSim : acts as an interface between Matlab logic and Coppelia simulation environment
+- QuadrotorSim : acts as an interface between Matlab logic and Coppelia simulation environment
 
 ## Experiments
 
@@ -29,16 +29,12 @@ Two task trajectories are considered: a hovering and an elicoidal trajectory.
 We tested the external wrench estimation and contact detection, in the following cases:
 
 
--in presence of wind action only
--in presence of a continuous contact action but in absence of wind action
--in presence of a continuous contact action and of wind action
--in presence of wind action and not uniformly distributed load mass
+- in presence of wind action only
+- in presence of a continuous contact action but in absence of wind action
+- in presence of a continuous contact action and of wind action
+- in presence of wind action and not uniformly distributed load mass
 
 
-
-- George Washington
-- John Adams
-- Thomas Jefferson
 
 
 
