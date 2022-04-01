@@ -40,7 +40,9 @@ We tested the external wrench estimation and contact detection, in the following
 
 
 ## Authors
-- [Francesco Starna](https://github.com/daydroidmuchiri) [Francesco Peracchia](https://github.com/kevinwairi) [Francesco Vincelli](https://github.com/kevinwairi)
+- [Francesco Starna](https://github.com/Starnino) 
+- [Francesco Peracchia](https://github.com/kevinwairi)
+- [Francesco Vincelli](https://github.com/FrancescoVIncelli)
 
 
 https://user-images.githubusercontent.com/49724442/161348200-a175f677-54da-4a05-b397-c92ea12cb9fd.mp4
