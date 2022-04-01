@@ -10,6 +10,7 @@ if isequal(gt_position(:,1),gt_position(:,end))
     scatter3(gt_position(1,1), gt_position(2,1), gt_position(3,1), 'filled') 
     hold on
     plot3(pr_position(1,:), pr_position(2,:), pr_position(3,:))
+    hold off
     title('Ground truth (blue) and real (red) trajectories')
     grid on
 else
