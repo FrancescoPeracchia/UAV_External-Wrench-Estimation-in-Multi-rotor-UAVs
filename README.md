@@ -36,4 +36,9 @@ We tested the external wrench estimation and contact detection, in the following
 
 
 
+- George Washington
+- John Adams
+- Thomas Jefferson
+
+
 
