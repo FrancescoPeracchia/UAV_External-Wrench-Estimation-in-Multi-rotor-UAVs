@@ -17,7 +17,7 @@ initial_state = [0 0 0.2 0 0 0 0 0 0 0 0 0];
 robot.init(initial_state);
 
 % initialization of task
-%trajectory = elicoidal_trajectory();
+%trajectory = spirale();
 trajectory = hovering(1);
 
 % control loop
@@ -25,6 +25,9 @@ t = 0:step:T;
 wrench = zeros(2,T/step);
 gt_position = zeros(3,T/step);
 pr_position = zeros(3,T/step);
+
+trajectory_plot = plot3(gt_position(1), gt_position(2), gt_position(3), pr_position(1), pr_position(2), pr_position(3));
+grid on
 for i = 1:length(t)
     
     % simulation time
@@ -44,6 +47,9 @@ for i = 1:length(t)
     wrench(:,i) = [norm(F_e(1:3)); norm(F_e(4:6))];
     gt_position(:,i) = traj(1,:);
     pr_position(:,i) = state(1:3);
+    pause(0.00000000001);
+    set(trajectory_plot(1), 'XData', gt_position(1,1:i), 'YData', gt_position(2,1:i), 'ZData', gt_position(3,1:i));
+    set(trajectory_plot(2), 'XData', pr_position(1,1:i), 'YData', pr_position(2,1:i), 'ZData', pr_position(3,1:i));
     disp(["time: ", current_time, "wrench: ", F_e]);
 end
 

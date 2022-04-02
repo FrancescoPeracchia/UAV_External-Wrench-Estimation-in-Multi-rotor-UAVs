@@ -1,4 +1,4 @@
-function trajectory = elicoidal_trajectory()
+function trajectory = spirale()
     % ELICOIDAL TRAJECOTRY
     % RETRUN:
     %   - quadcopter state (position, velocity, acceleration) at time @t
