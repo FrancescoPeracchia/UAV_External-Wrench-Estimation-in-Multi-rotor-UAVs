@@ -17,7 +17,7 @@ initial_state = [0 0 0.2 0 0 0 0 0 0 0 0 0];
 robot.init(initial_state);
 
 % initialization of task
-%trajectory = spirale();
+%trajectory = elicoidal_trajectory();
 trajectory = hovering(1);
 
 % control loop

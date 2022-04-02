@@ -2,6 +2,12 @@ classdef SimQuadcopter < handle
     % SIMQUADCOPTER
     %   handles data exchange between matlab and coppelia
     %   inheriting the Quadcopter class functions
+    % PARAMETERS:
+    %   - sim: remote api use for connection with CoppeliaSim
+    %   - id:  identify the connection basing on IP address and
+    %          port numbers
+    %   - handle: used for instantiation of the class
+    %   - quadcopter: reference to the Quadcopter class
     
     properties
         sim
@@ -14,9 +20,15 @@ classdef SimQuadcopter < handle
         
         function obj = SimQuadcopter(sim,id)
             % SIMQUADCOPTER constructor
+            
+            % get connection parameters
             obj.sim = sim;
             obj.id = id;
+            
+            % create connection
             [~,obj.handle] = sim.simxGetObjectHandle(id, 'Quadcopter', sim.simx_opmode_blocking);
+            
+            % get parameters from simulation scene
             [~,g] = sim.simxGetFloatSignal(id,'Physics/gravity',sim.simx_opmode_blocking);
             [~,m] = sim.simxGetFloatSignal(id,'UAV/mass',sim.simx_opmode_blocking);    
             [~,Ix] = sim.simxGetFloatSignal(id,'UAV/inertia/x',sim.simx_opmode_blocking);    
