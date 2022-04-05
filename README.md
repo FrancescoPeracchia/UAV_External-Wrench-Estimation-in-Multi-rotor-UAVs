@@ -22,7 +22,7 @@ The Matlab application is made up of three main classes:
 
 - **Aerodynamics**: contains the wrench estimation algorithm and the contact detection procedure
 
-- **QuadrotorSim**: acts as an interface between Matlab logic and Coppelia simulation environment
+- **QuadrotorSim**: acts as an interface between Matlab logic and Coppelia simulation, managing the data communication between the two main modules and the project
 
 ## Experiments
 
