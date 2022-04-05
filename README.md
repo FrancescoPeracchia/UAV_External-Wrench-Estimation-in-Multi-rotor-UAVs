@@ -33,7 +33,7 @@ We tested the external wrench estimation and contact detection, in the following
 - hovering trajectory + continuous force action [video](https://github.com/FrancescoPeracchia/UAV_External-Wrench-Estimation-in-Multi-rotor-UAVs/blob/main/video/experiment-hovering%2Bforce.mp4)
 - hovering trajectory + wind action + continuous force action [video](https://github.com/FrancescoPeracchia/UAV_External-Wrench-Estimation-in-Multi-rotor-UAVs/blob/main/video/experiment-hovering%2Bwind%26force.mp4)
 - hovering trajectory + wind action and not uniformly distributed load mass [video](https://github.com/FrancescoPeracchia/UAV_External-Wrench-Estimation-in-Multi-rotor-UAVs/blob/main/video/experiment-hovering%2Bwind%2Basymmetry.mp4)
-- spirale trajectory + wind action [video1](https://github.com/FrancescoPeracchia/UAV_External-Wrench-Estimation-in-Multi-rotor-UAVs/blob/main/video/experiment-spirale%2Bwind(1).mp4) [video2](https://github.com/FrancescoPeracchia/UAV_External-Wrench-Estimation-in-Multi-rotor-UAVs/blob/main/video/experiment-spirale%2Bwind(2).mp4)
+- spirale trajectory + wind action [video1](https://github.com/FrancescoPeracchia/UAV_External-Wrench-Estimation-in-Multi-rotor-UAVs/blob/main/video/experiment-spirale%2Bwind%20(1).mp4) [video2](https://github.com/FrancescoPeracchia/UAV_External-Wrench-Estimation-in-Multi-rotor-UAVs/blob/main/video/experiment-spirale%2Bwind%20(2).mp4)
 
 The **force vector** is indicated with a red line while the **wind torque** is indicated with a blue arrow with intensity and direction proportional to its dimension and norm.
 
