@@ -18,7 +18,7 @@ The project consists of two main modules:
 
 The Matlab application is made up of three main classes:
 
-- **Quadrotor**: implements the system dynamics and provides the control design for tracking task
+- **Quadrotor**: implements the dynamic model and properties of the system and provides the control laws for trajectory tracking of the desired task trajectory
 
 - **Aerodynamics**: contains the wrench estimation algorithm and the contact detection procedure
 
