@@ -29,6 +29,7 @@ pr_position = zeros(3,T/step);
 trajectory_plot = plot3(gt_position(1), gt_position(2), gt_position(3), pr_position(1), pr_position(2), pr_position(3));
 title('Ground truth (blue) and real (red) trajectories')
 grid on
+
 for i = 1:length(t)
     
     % simulation time
@@ -41,7 +42,7 @@ for i = 1:length(t)
     u = robot.control(traj);
     
     % send command to robot
-    state = robot.command(u,step);
+    state = robot.command(u,step,traj);
     
     % display
     F_e = robot.quadcopter.F_hat; 

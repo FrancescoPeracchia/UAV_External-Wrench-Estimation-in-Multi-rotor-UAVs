@@ -51,7 +51,7 @@ classdef SimQuadcopter < handle
             u = obj.quadcopter.control(traj);
         end
         
-        function state = command(obj,u,t)
+        function state = command(obj,u,t,traj)
             % COMMAND send commands to quadrotor and retrive state
             
             % send commands to simulator
@@ -104,6 +104,11 @@ classdef SimQuadcopter < handle
             obj.sim.simxSetFloatSignal(obj.id, 'UAV/aerodynamics/residual/phi', residual(1), obj.sim.simx_opmode_oneshot);
             obj.sim.simxSetFloatSignal(obj.id, 'UAV/aerodynamics/residual/theta', residual(2), obj.sim.simx_opmode_oneshot);
             obj.sim.simxSetFloatSignal(obj.id, 'UAV/aerodynamics/residual/psi', residual(3), obj.sim.simx_opmode_oneshot);
+            
+            % reference position along desired task trajectory
+            obj.sim.simxSetFloatSignal(obj.id, 'UAV/state/refposition/x', traj(1,1), obj.sim.simx_opmode_oneshot);
+            obj.sim.simxSetFloatSignal(obj.id, 'UAV/state/refposition/y', traj(1,1), obj.sim.simx_opmode_oneshot);
+            obj.sim.simxSetFloatSignal(obj.id, 'UAV/state/refposition/z', traj(1,1), obj.sim.simx_opmode_oneshot);
             
             % trigger simulation
             obj.sim.simxSynchronousTrigger(obj.id);
