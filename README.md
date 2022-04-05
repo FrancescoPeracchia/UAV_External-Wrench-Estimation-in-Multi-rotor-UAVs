@@ -24,6 +24,9 @@ The Matlab application is made up of three main classes:
 
 - **QuadrotorSim**: acts as an interface between Matlab logic and Coppelia simulation, managing the data communication between the two main modules and the project
 
+## Modeling
+We modeled the system dynamics following the Lagrangian formalism
+
 ## Experiments
 
 Two task trajectories are considered:
