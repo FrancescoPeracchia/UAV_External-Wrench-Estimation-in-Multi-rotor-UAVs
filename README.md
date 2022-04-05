@@ -26,6 +26,7 @@ The Matlab application is made up of three main classes:
 
 ## Modeling and Control
 We modeled the system dynamics following the Lagrangian formalism. The cascaded control structure is composed of a position tracking controller and an attitude controller. The position controller tracks a desired position, velocity, and acceleration.
+The required attitude R𝑑𝑖 is obtained from the desired angles φ, θ, ψ. The first two orientation angles are obtained by geometric inspection from the inertial control forces, while the last remains left to be controlled.
 
 ## Experiments
 
