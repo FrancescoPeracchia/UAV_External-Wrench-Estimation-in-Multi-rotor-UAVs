@@ -24,8 +24,8 @@ The Matlab application is made up of three main classes:
 
 - **QuadrotorSim**: acts as an interface between Matlab logic and Coppelia simulation, managing the data communication between the two main modules and the project
 
-## Modeling
-We modeled the system dynamics following the Lagrangian formalism
+## Modeling and Control
+We modeled the system dynamics following the Lagrangian formalism. The cascaded control structure is composed of a position tracking controller and an attitude controller. The position controller tracks a desired position, velocity, and acceleration.
 
 ## Experiments
 
