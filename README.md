@@ -28,7 +28,7 @@ The Matlab application is made up of three main classes:
 
 Two task trajectories are considered:
 - a hovering task, tested with both wind and contact force actions
-- and an elicoidal trajectory tested with wind action only
+- an elicoidal trajectory tested with wind action only
 
 We tested the external wrench estimation and contact detection, in the following cases:
 
