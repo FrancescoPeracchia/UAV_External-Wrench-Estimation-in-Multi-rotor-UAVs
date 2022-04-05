@@ -106,9 +106,10 @@ classdef SimQuadcopter < handle
             obj.sim.simxSetFloatSignal(obj.id, 'UAV/aerodynamics/residual/psi', residual(3), obj.sim.simx_opmode_oneshot);
             
             % reference position along desired task trajectory
-            obj.sim.simxSetFloatSignal(obj.id, 'UAV/state/refposition/x', traj(1,1), obj.sim.simx_opmode_oneshot);
-            obj.sim.simxSetFloatSignal(obj.id, 'UAV/state/refposition/y', traj(1,1), obj.sim.simx_opmode_oneshot);
-            obj.sim.simxSetFloatSignal(obj.id, 'UAV/state/refposition/z', traj(1,1), obj.sim.simx_opmode_oneshot);
+            pose = traj(1,:);
+            obj.sim.simxSetFloatSignal(obj.id, 'UAV/state/refposition/x', pose(1), obj.sim.simx_opmode_oneshot);
+            obj.sim.simxSetFloatSignal(obj.id, 'UAV/state/refposition/y', pose(2), obj.sim.simx_opmode_oneshot);
+            obj.sim.simxSetFloatSignal(obj.id, 'UAV/state/refposition/z', pose(3), obj.sim.simx_opmode_oneshot);
             
             % trigger simulation
             obj.sim.simxSynchronousTrigger(obj.id);
