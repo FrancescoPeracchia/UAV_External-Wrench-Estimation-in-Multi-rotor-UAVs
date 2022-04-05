@@ -61,6 +61,9 @@ https://user-images.githubusercontent.com/49724442/161348200-a175f677-54da-4a05-
 ## Weakenesses
 The provided system for external wrench estimation is not complete since the module aimed at discriminating between aerodynamics and contact actions is missing. This is in particular due to the limits set by the simulation environment that prevented us to correctly perform the required empiric evaluation of the airspeed needed to fit a suitable model for the aerodynamic forces according to the blade flapping model.
 
+## Improvements
+Possible improvements could be achieved by including the discrimination of the external wrenches, collecting the required data for the estimation of the aerodynamics model by performing empiric studies in a controlled real-world environment or by switching to different simulation tools.
+
 ## References
 > Teodor Tomić, Philipp Lutz, Korbinian Schmid, Andrew Mathers, Sami Haddadin 2018
 [Simultaneous Contact and Aerodynamic Force Estimation (s-CAFE) for Aerial Robots](https://arxiv.org/abs/1810.12908)
